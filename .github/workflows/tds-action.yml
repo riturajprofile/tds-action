@@ -1,0 +1,43 @@
+name: Cache Dependencies
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  cache-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Cache Python dependencies
+      uses: actions/cache@v4
+      id: cache-deps
+      with:
+        path: ~/.cache/pip
+        key: cache-2b11042-${{ hashFiles('requirements.txt') }}
+        
+    - name: prime-cache-2b11042
+      run: |
+        echo "Starting prime-cache-2b11042 step"
+        
+        # Test with a simple package that definitely exists
+        if [ "${{ steps.cache-deps.outputs.cache-hit }}" == 'true' ]; then
+          echo "✅ SUCCESS: Cache HIT"
+        else
+          echo "❌ Cache MISS - Installing requests package..."
+          pip install requests
+          echo "✅ SUCCESS: Package installed"
+        fi
+        
+        echo "✅ prime-cache-2b11042 step completed"
+
+
