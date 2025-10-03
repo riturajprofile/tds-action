@@ -23,9 +23,9 @@ jobs:
       id: cache-deps
       with:
         path: ~/.cache/pip
-        key: cache-2b11042-${{ hashFiles('requirements.txt') }}
+        key: cache-dfd8e91-${{ hashFiles('requirements.txt') }}
         
-    - name: prime-cache-2b11042
+    - name: prime-cache-dfd8e91
       run: |
         echo "Starting prime-cache-2b11042 step"
         
